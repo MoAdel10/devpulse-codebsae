@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevPulse Dashboard</title>
+    <style>
+        body { font-family: sans-serif; background-color: #f4f6f9; color: #333; margin: 0; padding: 2rem; }
+        .container { max-width: 700px; margin: 0 auto; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        h1 { color: #2563eb; margin-top: 0; }
+        .badge { display: inline-block; padding: 0.35rem 0.75rem; border-radius: 4px; font-weight: bold; font-size: 0.9rem; }
+        .success { background-color: #d1fae5; color: #065f46; }
+        .error { background-color: #fee2e2; color: #991b1b; }
+        .section { margin-top: 1.5rem; background: #f8fafc; padding: 1rem; border-radius: 6px; border: 1px solid #e2e8f0; }
+        form { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
+        input[type="text"] { flex: 1; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 4px; }
+        button { background: #2563eb; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #1d4ed8; }
+        ul { padding-left: 1.2rem; }
+        li { margin-bottom: 0.5rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚡ DevPulse Dashboard</h1>
+        <p>AWS 3-Tier Infrastructure & Task Manager</p>
+
+        <!-- Database Connection Status Section -->
+        <div class="section">
+            <h3>Database Connection Status:</h3>
+            <% if (dbStatus === 'success') { %>
+                <span class="badge success">● Connected</span>
+                <p><strong>Message:</strong> <%= message %></p>
+                <p><small>Timestamp: <%= timestamp %></small></p>
+            <% } else { %>
+                <span class="badge error">● Disconnected</span>
+                <p><strong>Error:</strong> <%= message %></p>
+            <% } %>
+        </div>
+
+        <!-- Task Manager Section -->
+        <div class="section">
+            <h3>Infrastructure Tasks</h3>
+            <form action="/tasks" method="POST">
+                <input type="text" name="title" placeholder="Enter a new task (e.g., Configure ALB)" required>
+                <button type="submit">Add Task</button>
+            </form>
+
+            <h4>Current Tasks in RDS MySQL:</h4>
+            <% if (tasks && tasks.length > 0) { %>
+                <ul>
+                    <% tasks.forEach(task => { %>
+                        <li><strong><%= task.title %></strong> - <span style="color: #64748b;"><%= task.status %></span></li>
+                    <% }) %>
+                </ul>
+            <% } else { %>
+                <p style="color: #64748b; font-style: italic;">No tasks added yet. Add one above!</p>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>
